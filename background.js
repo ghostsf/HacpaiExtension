@@ -13,14 +13,10 @@ chrome.alarms.create("autoMission", {periodInMinutes: 30});
 chrome.alarms.onAlarm.addListener(function( a ){
     switch (a.name){
     case "checkMsg":
-        storage.get(function (response) {
-            Number(response.newMsg) && checkMsg();
-        });
+        checkMsg();
         break;
     case "autoMission":
-        storage.get(function (response) {
-            Number(response.autoMission) && autoMission();
-        });
+        autoMission();
         break;
     }
 });
@@ -70,11 +66,13 @@ function autoMission(){
                                     "autoMission" ,
                                     {
                                         type    : "basic",
-                                        iconUrl : "icon/icon_notice.png",
+                                        iconUrl : "icon/icon.png",
                                         title   : "HacpaiExtension 提醒您",
                                         message : msg,
                                     }
                                 );
+                                var msgShow = "获得积分："+code+" <br> 签到时间："+nowTime.toLocaleTimeString();     
+                                storage.set( {"autoMissionSuccess" : msgShow} );
                             },
                             error: function(err){
                                 console.log(nowTime.toLocaleTimeString()  +  " 签到请求失败\n"  +  err);
@@ -99,7 +97,8 @@ function clean_msg(){
     chrome.browserAction.setBadgeText({
         text: ''
     });
-    browser.tabs.create({url: hacpaiHost + "/notifications/commented"});
+    chrome.tabs.create({url: hacpaiHost + "/notifications/commented"});
+    storage.set( {"unreadCount" : 0} );
 }
 
 chrome.browserAction.setBadgeBackgroundColor({
@@ -128,17 +127,20 @@ function checkMsg(){
                         for(key in res.data) {
                             count += res.data[key];
                         }
-                        chrome.browserAction.setBadgeText({
-                            text: count
-                        });
-                        browser_notifications_create(
-                            "newMsg" ,
-                            {
-                                type       : "basic",
-                                iconUrl    : "icon/icon_notice.png",
-                                title      : "HacpaiExtension 提醒您",
-                                message    : "您有黑客派社区的"+count+"条未读新消息，点击查看。"
+                        storage.set( {"unreadCount" : count} );
+                        if(count > 0) {
+                            chrome.browserAction.setBadgeText({
+                                text: count + ''
                             });
+                            browser_notifications_create(
+                                "newMsg" ,
+                                {
+                                    type       : "basic",
+                                    iconUrl    : "icon/icon.png",
+                                    title      : "HacpaiExtension 提醒您",
+                                    message    : "您有"+count+"条未读新消息，点击查看。"
+                                });
+                        }
                     }else{
                         console.log("请求失败！ " + res.msg);
                     }   
