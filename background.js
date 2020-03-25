@@ -71,7 +71,7 @@ function autoMission(){
                                         message : msg,
                                     }
                                 );
-                                var msgShow = "获得积分："+code+" <br> 签到时间："+nowTime.toLocaleTimeString();     
+                                var msgShow = "获得积分："+code+"，签到时间："+nowTime.toLocaleTimeString();     
                                 storage.set( {"autoMissionSuccess" : msgShow} );
                             },
                             error: function(err){

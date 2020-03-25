@@ -13,8 +13,8 @@ storage.get(function (response) {
             chrome.browserAction.setBadgeText({
                 text: ''
             });
-            chrome.tabs.create({url: "https://hacpai.com/notifications/commented"});
             storage.set( {"unreadCount" : 0} );
+            chrome.tabs.create({url: "https://hacpai.com/notifications/commented"});
         });
         $('#unread').show();
     }else{
