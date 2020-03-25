@@ -1,0 +1,20 @@
+.idea
+.DS_Store
+
+# System folder for VSCode local history plugin
+.history
+#.vscode
+
+app/build
+dist
+node_modules
+
+reports
+npm-debug.log
+deployments.log
+yarn-error.log
+package-lock.json
+yarn.lock
+lerna-debug.log
+.prettierrc
+

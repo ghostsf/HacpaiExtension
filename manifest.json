@@ -1,0 +1,36 @@
+{
+  "name": "Hacpai Extension",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Hacpai Extension，优雅便捷的黑客派社区浏览器扩展",
+  "homepage_url": "https://ghostsf.com",
+  "background": {
+    "scripts": ["libs/jquery-3.2.0.min.js", "background.js"]
+  },
+  "permissions": [
+    "alarms",
+    "notifications",
+    "storage",
+    "cookies",
+    "*://*.hacpai.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.hacpai.com/*"],
+      "js": ["libs/jquery-3.2.0.min.js", "content.js"]
+    }
+  ],
+  "browser_action": {
+    "default_icon": "icon/icon.png",
+    "default_popup": "page/popup.html"
+  },
+  "options_ui": {
+    "page": "page/options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "icon/icon16.png",
+    "48": "icon/icon48.png",
+    "128": "icon/icon128.png"
+  }
+}

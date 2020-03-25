@@ -1,0 +1,26 @@
+{
+  "name": "HacpaiExtension",
+  "version": "0.0.1",
+  "description": "Browser extension for Hacpai",
+  "devDependencies": {
+    "chrome-webstore-upload-cli": "^1.2.0"
+  },
+  "scripts": {
+    "release": "./node_modules/.bin/webstore upload --auto-publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghostsf/HacpaiExtension.git"
+  },
+  "keywords": [
+    "hacpai",
+    "黑客派",
+    "extension"
+  ],
+  "author": "ghostsf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ghostsf/HacpaiExtension/issues"
+  },
+  "homepage": "https://github.com/ghostsf/HacpaiExtension#readme"
+}
