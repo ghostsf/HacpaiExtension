@@ -1,6 +1,11 @@
 const storage = chrome.storage.sync;
 
 storage.get(function (response) {
+    if(response.isLogin){
+        $('#checkInText').text("╰(￣▽￣)╭");
+    }else{
+        $('#checkInText').text("( ´･･)ﾉ(._.`) 请先登录黑客派社区");
+    }
     if( response.autoMission == new Date().getUTCDate() ){
         $('#checkInText').text(response.autoMissionSuccess);
         $('#checkInShow').show();
