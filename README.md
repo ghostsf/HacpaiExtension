@@ -11,11 +11,7 @@
 + 消息提醒
 + 双击返回顶部
 
-## 安装
-
-<a href="https://chrome.google.com/webstore/detail/ajmjbhndjfmegheielkjcmmgddkaghee"><img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_128x128.png" width="48" /></a>
-
-## 开发
+## 安装||开发
 
 **Chrome安装扩展：**
 
