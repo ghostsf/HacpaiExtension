@@ -89,7 +89,9 @@ function autoMission(){
                 success: function(data){
                     var html = $.trim(data);
                     var signUrl = $(html).find('.btn.green').attr('href');
-                    console.debug('signUrl:'+signUrl)
+                    if(!signUrl){
+                        signUrl = hacpaiHost + "/activity/daily-checkin";
+                    }
                     var nowTime  =  new  Date();
                     $.ajax({
                         url: signUrl,
