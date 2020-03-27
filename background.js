@@ -162,6 +162,9 @@ function checkMsg(){
         if(response.isLogin){
             $.ajax({
                 url: hacpaiHost + "/api/v2/notifications/unread/count",
+                beforeSend:function(xhr){
+                    xhr.setRequestHeader("User-Agent","HacpaiExtension/0.0.1");
+                },
                 success: function(res){
                     if(res.sc == 0) {
                         var count = res.data.unreadNotificationCnt;
