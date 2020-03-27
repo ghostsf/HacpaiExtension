@@ -123,13 +123,13 @@ function autoMission(){
                             }     
                             storage.set( {"autoMissionSuccess" : msgShow} );
                         },
-                        error: function(err){
-                            console.error(nowTime.toLocaleTimeString()  +  " 签到请求失败\n"  +  err);
+                        error: function(){
+                            console.error(nowTime.toLocaleTimeString()  +  " 签到请求失败！");
                         }
                     });
                 },
-                error: function(err){
-                    console.error("请求失败！"+err);
+                error: function(){
+                    console.error("请求失败！");
                 }
             });
         }
@@ -183,8 +183,8 @@ function checkMsg(){
                         console.error("请求失败！ " + res.msg);
                     }   
                 },
-                error: function(err){
-                    console.error("请求失败！"+err);
+                error: function(){
+                    console.error("请求失败！");
                 }
             });
         }
