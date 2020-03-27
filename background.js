@@ -11,6 +11,8 @@ function browser_notifications_create(id, options) {
     chrome.notifications.create(id, options);
 }
 
+checkMsg();
+
 // 定时任务
 chrome.alarms.create("checkCookies", {periodInMinutes: config.checkCookiesTimeout});
 chrome.alarms.create("checkMsg", {periodInMinutes: config.checkMsgTimeout});
@@ -162,9 +164,6 @@ function checkMsg(){
         if(response.isLogin){
             $.ajax({
                 url: hacpaiHost + "/api/v2/notifications/unread/count",
-                beforeSend:function(xhr){
-                    xhr.setRequestHeader("User-Agent","HacpaiExtension/0.0.1");
-                },
                 success: function(res){
                     if(res.sc == 0) {
                         var count = res.data.unreadNotificationCnt;
@@ -192,4 +191,22 @@ function checkMsg(){
             });
         }
     });
+}
+
+//webRequest 兼容17之前版本的chrome 修改User-Agent
+var webRequest = chrome.webRequest||chrome.experimental.webRequest;
+if(webRequest){
+    webRequest.onBeforeSendHeaders.addListener(
+        function(details) {
+            for (var i = 0; i < details.requestHeaders.length; ++i) {
+                if (details.requestHeaders[i].name === 'User-Agent') {
+                    details.requestHeaders[i].value = "HacpaiExtension/0.0.1";
+                    break;
+                }
+            }
+            return { requestHeaders: details.requestHeaders };
+        },
+        {urls: [hacpaiHost + "/api/*"]},
+        ["blocking", "requestHeaders"]
+    );
 }

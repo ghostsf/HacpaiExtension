@@ -12,6 +12,8 @@
     "notifications",
     "storage",
     "cookies",
+    "webRequest",
+    "webRequestBlocking",
     "*://*.hacpai.com/*"
   ],
   "content_scripts": [
