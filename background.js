@@ -82,6 +82,9 @@ function checkCookies(){
 // 自动签到
 function autoMission(){
     storage.get(function (response) {
+        if(!response.autoMissionSet){
+            return;
+        }
         if(response.autoMission == new Date().getUTCDate()){
             return;
         }
@@ -161,7 +164,7 @@ chrome.browserAction.setBadgeTextColor &&
 // 消息通知
 function checkMsg(){
     storage.get(function (response) {
-        if(response.isLogin){
+        if(response.newMsg&&response.isLogin){
             $.ajax({
                 url: hacpaiHost + "/api/v2/notifications/unread/count",
                 success: function(res){
