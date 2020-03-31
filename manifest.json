@@ -19,7 +19,8 @@
   "content_scripts": [
     {
       "matches": ["*://*.hacpai.com/*"],
-      "js": ["libs/jquery-3.2.0.min.js", "content.js"]
+      "js": ["libs/jquery-3.2.0.min.js", "content.js", "libs/doutu.js", "libs/ChatNum.js"],
+      "css": ["libs/doutu.css"]
     }
   ],
   "browser_action": {
