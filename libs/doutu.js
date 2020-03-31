@@ -11,7 +11,7 @@ function addDoutuBtn() {
   $(btn).click(function () {
     showPop(true)
   })
-  $(btn).appendTo($('.fn__clear'))
+  $(btn).appendTo($('.chats__input .fn__clear'))
   addDoutuView()
 }
 
