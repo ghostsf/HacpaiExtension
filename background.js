@@ -12,7 +12,7 @@ function browser_notifications_create(id, options) {
 }
 
 checkMsg();
-autoMission();
+// autoMission();
 
 // 定时任务
 chrome.alarms.create("checkCookies", {periodInMinutes: config.checkCookiesTimeout});
@@ -86,9 +86,9 @@ function autoMission(){
         if(!response.autoMissionSet){
             return;
         }
-        // if(response.autoMission == new Date().getUTCDate()){
-        //     return;
-        // }
+        if(response.autoMission == new Date().getUTCDate()){
+            return;
+        }
         if(response.isLogin){
             $.ajax({
                 url: hacpaiHost + "/activity/daily-checkin",
