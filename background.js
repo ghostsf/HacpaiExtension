@@ -12,6 +12,7 @@ function browser_notifications_create(id, options) {
 }
 
 checkMsg();
+autoMission();
 
 // 定时任务
 chrome.alarms.create("checkCookies", {periodInMinutes: config.checkCookiesTimeout});
@@ -85,9 +86,9 @@ function autoMission(){
         if(!response.autoMissionSet){
             return;
         }
-        if(response.autoMission == new Date().getUTCDate()){
-            return;
-        }
+        // if(response.autoMission == new Date().getUTCDate()){
+        //     return;
+        // }
         if(response.isLogin){
             $.ajax({
                 url: hacpaiHost + "/activity/daily-checkin",
@@ -97,13 +98,14 @@ function autoMission(){
                     if(!signUrl){
                         signUrl = hacpaiHost + "/activity/daily-checkin";
                     }
+                    console.log(signUrl);
                     var nowTime  =  new  Date();
                     $.ajax({
                         url: signUrl,
                         success: function(data){
+                            // console.log(data);
                             var html = $.trim(data);
                             var codeArr  =  $($(html).find('div.vditor-reset')).children('code');
-                            console.debug(codeArr);
                             var code = $(codeArr[0]).text();
                             if(codeArr.length > 2){
                                 var extraCode = $(codeArr[1]).text();
@@ -129,12 +131,12 @@ function autoMission(){
                             storage.set( {"autoMissionSuccess" : msgShow} );
                         },
                         error: function(){
-                            console.error(nowTime.toLocaleTimeString()  +  " 签到请求失败！");
+                            console.log(nowTime.toLocaleTimeString()  +  " 签到请求失败！");
                         }
                     });
                 },
                 error: function(){
-                    console.error("请求失败！");
+                    console.log("请求失败！");
                 }
             });
         }
@@ -185,11 +187,11 @@ function checkMsg(){
                         }
                         storage.set( {"unreadCount" : count} );
                     }else{
-                        console.error("请求失败！ " + res.msg);
+                        console.log("请求失败！ " + res.msg);
                     }   
                 },
                 error: function(){
-                    console.error("请求失败！");
+                    console.log("请求失败！");
                 }
             });
         }
@@ -201,17 +203,43 @@ var webRequest = chrome.webRequest||chrome.experimental.webRequest;
 if(webRequest){
     webRequest.onBeforeSendHeaders.addListener(
         function(details) {
-            for (var i = 0; i < details.requestHeaders.length; ++i) {
-                if (details.requestHeaders[i].name === 'User-Agent') {
-                    details.requestHeaders[i].value = "HacpaiExtension/0.0.1";
-                    break;
+            if(details.url.indexOf(hacpaiHost + "/activity/daily-checkin?token")!=-1){
+                console.log(details);
+                details.requestHeaders.push({
+                    name: 'Referer',
+                    value: hacpaiHost + "/activity/checkin"
+                  });
+                details.requestHeaders.push({
+                    name: 'Upgrade-Insecure-Requests',
+                    value: 1
+                });
+            }
+            if(details.url.indexOf(hacpaiHost + "/api")!=-1){
+                for (var i = 0; i < details.requestHeaders.length; ++i) {
+                    if (details.requestHeaders[i].name === 'User-Agent') {
+                        details.requestHeaders[i].value = "HacpaiExtension/0.0.1";
+                        break;
+                    }
                 }
             }
             return { requestHeaders: details.requestHeaders };
         },
-        {urls: [hacpaiHost + "/api/*"]},
+        {urls: [hacpaiHost + "/api/*",hacpaiHost + "/activity/daily-checkin*"]},
         ["blocking", "requestHeaders"]
     );
+    // webRequest.onBeforeSendHeaders.addListener(
+    //     function(details) {
+    //         for (var i = 0; i < details.requestHeaders.length; ++i) {
+    //             if (details.requestHeaders[i].name === 'Referer') {
+    //                 details.requestHeaders[i].value = "https://hacpai.com/activity/checkin";
+    //                 break;
+    //             }
+    //         }
+    //         return { requestHeaders: details.requestHeaders };
+    //     },
+    //     {urls: [hacpaiHost + "/activity/checkin"]},
+    //     ["blocking", "requestHeaders"]
+    // );
 }
 
 // 斗图数据请求
